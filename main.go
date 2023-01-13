@@ -7,18 +7,26 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/gofiber/fiber/v2"
 	_ "github.com/lib/pq"
 )
 
 func main() {
-	fmt.Println("ay")
+	app := fiber.New()
 	client, err := ent.Open("postgres", "host=localhost port=5432 user=postgres password=Tripleh1 dbname=postgres sslmode=disable")
 	if err != nil {
 		log.Fatalf("Failed to open database: %v", err)
 	}
 	defer client.Close()
-	user, _ := QueryUser(context.Background(), client)
-	fmt.Println(user)
+
+	app.Get("/foo", func(x *fiber.Ctx) error {
+		user, err := QueryUser(context.Background(), client)
+		if err != nil {
+			return x.SendString(err.Error())
+		}
+		return x.SendString(fmt.Sprintf("User return: %s", user))
+	})
+	app.Listen(":3000")
 }
 
 func CreateUsuario(ctx context.Context, client *ent.Client) (*ent.Usuario, error) {
