@@ -14,6 +14,7 @@ func main() {
 	app := fiber.New(config)
 
 	routes.PublicRoutes(app)
+	routes.PrivateRoutes(app)
 
 	utils.StartServer(app)
 }

@@ -1,13 +1,16 @@
 package routes
 
 import (
+	"fiberent/app/controllers"
+	"fiberent/pkg/middleware"
+
 	"github.com/gofiber/fiber/v2"
 )
 
 func PrivateRoutes(app *fiber.App) {
-	routes := app.Group("/api,v1")
+	routes := app.Group("/api/v1")
 
-	routes.Post("/user")
+	routes.Post("/user", middleware.JWTProtected(), controllers.CreateUser)
 
 	//client, err := ent.Open("postgres", "host=localhost port=5432 user=postgres password=Tripleh1 dbname=postgres sslmode=disable")
 	/*if err != nil {
