@@ -5,6 +5,10 @@ import (
 )
 
 func PrivateRoutes(app *fiber.App) {
+	routes := app.Group("/api,v1")
+
+	routes.Post("/user")
+
 	//client, err := ent.Open("postgres", "host=localhost port=5432 user=postgres password=Tripleh1 dbname=postgres sslmode=disable")
 	/*if err != nil {
 		log.Fatalf("Failed to open database: %v", err)

@@ -14,4 +14,5 @@ func PublicRoutes(a *fiber.App) {
 
 	// Routes for GET method:
 	route.Get("/user/:username", controllers.GetUser)
+	route.Get("/users", controllers.GetAllUsers)
 }

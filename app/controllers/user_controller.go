@@ -8,6 +8,31 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+func GetAllUsers(c *fiber.Ctx) error {
+	url, _ := utils.ConnectionURLBuilder("postgres")
+	client, err := ent.Open("postgres", url)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error":   true,
+			"message": "Something happened in the server",
+			"user":    nil,
+		})
+	}
+	users, err := client.Usuario.Query().All(c.Context())
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error":   true,
+			"message": "Something happened retrieving users",
+			"user":    nil,
+		})
+	}
+	return c.JSON(fiber.Map{
+		"error":   false,
+		"message": nil,
+		"users":   users,
+	})
+}
+
 func GetUser(x *fiber.Ctx) error {
 	username := x.Params("username")
 	url, _ := utils.ConnectionURLBuilder("postgres")

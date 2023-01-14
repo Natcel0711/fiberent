@@ -2,13 +2,19 @@ package utils
 
 import (
 	"fmt"
+	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func ConnectionURLBuilder(n string) (string, error) {
 	// Define URL to connection.
 	var url string
-
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Failed to load environment variables: %v", err)
+	}
 	// Switch given names.
 	switch n {
 	case "postgres":
