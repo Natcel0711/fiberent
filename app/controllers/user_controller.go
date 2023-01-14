@@ -3,13 +3,15 @@ package controllers
 import (
 	"fiberent/ent"
 	"fiberent/ent/usuario"
+	"fiberent/pkg/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func GetUser(x *fiber.Ctx) error {
 	username := x.Params("username")
-	client, err := ent.Open("postgres", "host=localhost port=5432 user=postgres password=Tripleh1 dbname=postgres sslmode=disable")
+	url, _ := utils.ConnectionURLBuilder("postgres")
+	client, err := ent.Open("postgres", url)
 	if err != nil {
 		return x.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error":   true,
